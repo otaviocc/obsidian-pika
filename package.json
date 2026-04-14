@@ -1,5 +1,5 @@
 {
-    "name": "pika-publish-plugin",
+    "name": "pika-publish",
     "version": "1.0.0",
     "description": "Publish Note to Pika",
     "main": "main.js",

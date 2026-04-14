@@ -1,5 +1,5 @@
 {
-    "id": "pika-publish-plugin",
+    "id": "pika-publish",
     "name": "Pika.publish",
     "version": "1.0.0",
     "minAppVersion": "0.15.0",
