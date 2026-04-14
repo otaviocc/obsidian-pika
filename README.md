@@ -11,7 +11,7 @@ Does this plugin improve your workflow? Say thanks with a coffee.
 ## Features
 
 - Publish to Pika via the Micropub API
-  - **Posts**: publish with title, tags, visibility (Draft/Public), and optional scheduled date.
+  - **Posts**: publish with title, tags, visibility (Draft/Public), and optional post date.
 - Image handling
   - Automatically finds local images in your note (standard Markdown and Obsidian wiki-style image links), uploads them to Pika, and replaces references with hosted URLs.
   - Caches uploaded image mappings in note properties for fast re-publish.
@@ -32,7 +32,7 @@ Create an App Token in Pika at `Settings → App tokens`, copy it immediately, a
    - `title`: overrides filename as the post title.
    - `tags`: comma-separated list (e.g., `writing, book-notes`).
 3. Use the Command Palette and run `Publish Post to Pika`.
-4. Review and adjust fields (title, tags, visibility, scheduled date).
+4. Review and adjust fields (title, tags, visibility, date).
 5. Confirm to publish. The note's Properties will be updated with the post `url`.
 
 ## Commands
@@ -77,9 +77,9 @@ url: https://you.pika.page/posts/my-new-post
 - Relative paths are resolved against the note's folder. Remote image URLs are left unchanged.
 - If you need to force reprocessing, remove the `image_urls` Property and re-publish.
 
-## Scheduling posts
+## Post date
 
-- In the post review dialog, set an optional scheduled date/time. The date must be parseable by your system (e.g., `2025-09-12 14:00`). Leave blank to publish immediately.
+- In the post review dialog, you can optionally set the date of the post. Use any date from the past up to the current date and time (e.g., `2025-09-12 14:00`). Leave blank to use the current date and time.
 
 ## Building from source
 
