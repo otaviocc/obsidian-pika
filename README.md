@@ -4,6 +4,10 @@ Pika.publish is a community-maintained plugin for [Obsidian](https://obsidian.md
 
 This community-maintained plugin is not affiliated with Pika or Obsidian.
 
+Does this plugin improve your workflow? Say thanks with a coffee.
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/otaviocc)
+
 ## Features
 
 - Publish to Pika via the Micropub API
