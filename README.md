@@ -11,7 +11,7 @@ This community-maintained plugin is not affiliated with Pika or Obsidian.
 - Image handling
   - Automatically finds local images in your note (standard Markdown and Obsidian wiki-style image links), uploads them to Pika, and replaces references with hosted URLs.
   - Caches uploaded image mappings in note properties for fast re-publish.
-- Categories and tags
+- Tags
   - Default tags and visibility for new posts.
 - Obsidian Properties (YAML frontmatter) support
   - Uses `title`, `tags` when present; falls back to filename and defaults otherwise.
@@ -38,7 +38,7 @@ Create an App Token in Pika at `Settings → App tokens`, copy it immediately, a
 ## Settings
 
 - Posts
-  - **Categories**: default tags for new posts (comma-separated).
+  - **Tags**: default tags for new posts (comma-separated).
   - **Visibility**: `Draft` or `Public` default for posts.
 - Account
   - **App Token**: log in / log out of Pika.

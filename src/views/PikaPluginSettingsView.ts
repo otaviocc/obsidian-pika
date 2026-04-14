@@ -136,10 +136,10 @@ export class PikaPluginSettingsView extends PluginSettingTab implements PikaPlug
         containerEl.createEl('h2', { text: 'Posts' })
 
         new Setting(containerEl)
-            .setName('Categories')
-            .setDesc('Default list of categories for new posts.')
+            .setName('Tags')
+            .setDesc('Default list of tags for new posts.')
             .addText(text => text
-                .setPlaceholder('category1, category2, category3')
+                .setPlaceholder('tag1, tag2, tag3')
                 .setValue(this.viewModel.tags)
                 .onChange(value => {
                     this.viewModel.tags = value
