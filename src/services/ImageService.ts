@@ -88,6 +88,7 @@ export class ImageService implements ImageServiceInterface {
     private frontmatterService: FrontmatterServiceInterface
     private networkClient: NetworkClientInterface
     private networkRequestFactory: NetworkRequestFactoryInterface
+    private failed = false
 
     // Life cycle
 
@@ -120,6 +121,7 @@ export class ImageService implements ImageServiceInterface {
     public async processAndUploadImages(
         content: string
     ): Promise<string> {
+        this.failed = false
         const imageURLMap = await this.getImageURLMap()
         let processedContent = content
 
@@ -137,13 +139,15 @@ export class ImageService implements ImageServiceInterface {
             imageURLMap
         )
 
-        processedContent = await this.processImageReferences(
-            processedContent,
-            wikiImages,
-            imageURLMap
-        )
+        if (!this.failed) {
+            processedContent = await this.processImageReferences(
+                processedContent,
+                wikiImages,
+                imageURLMap
+            )
+        }
 
-        if (allImages.length > 0) {
+        if (allImages.length > 0 && !this.failed) {
             this.delegate?.imageProcessingDidComplete()
         }
 
@@ -191,6 +195,10 @@ export class ImageService implements ImageServiceInterface {
         let processedContent = content
 
         for (const image of images) {
+            if (this.failed) {
+                break
+            }
+
             try {
                 if (imageURLMap[image.path]) {
                     const remoteURL = imageURLMap[image.path]
@@ -205,17 +213,19 @@ export class ImageService implements ImageServiceInterface {
 
                 const imageFile = this.getImageFile(image.path)
                 if (!imageFile) {
+                    this.failed = true
                     this.delegate?.imageDidProcess(image.path, false)
                     this.delegate?.imageProcessingDidFail(
                         new Error(`Image file not found: ${image.path}`)
                     )
-                    continue
+                    break
                 }
 
                 const remoteURL = await this.uploadImageFile(imageFile)
                 if (!remoteURL) {
+                    this.failed = true
                     this.delegate?.imageDidProcess(image.path, false)
-                    continue
+                    break
                 }
 
                 await this.saveImageURL(image.path, remoteURL)
@@ -228,10 +238,12 @@ export class ImageService implements ImageServiceInterface {
 
                 this.delegate?.imageDidProcess(image.path, true, remoteURL)
             } catch {
+                this.failed = true
                 this.delegate?.imageDidProcess(image.path, false)
                 this.delegate?.imageProcessingDidFail(
                     new Error(`Failed to process image: ${image.path}`)
                 )
+                break
             }
         }
 
@@ -243,16 +255,6 @@ export class ImageService implements ImageServiceInterface {
         image: ImageReference,
         remoteURL: string
     ): string {
-        const isStandardMarkdownImage = image.fullMatch.startsWith('![')
-        const hasImagePath = image.fullMatch.includes('](')
-
-        if (isStandardMarkdownImage && hasImagePath) {
-            return content.replace(
-                image.fullMatch,
-                `![${image.altText}](${remoteURL})`
-            )
-        }
-
         return content.replace(
             image.fullMatch,
             `![${image.altText}](${remoteURL})`

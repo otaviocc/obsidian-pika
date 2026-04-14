@@ -24,7 +24,6 @@ SOFTWARE.
 
 import '@extensions/String'
 import { FrontmatterServiceInterface } from '@services/FrontmatterService'
-import { ImageServiceInterface } from '@services/ImageService'
 import { MarkdownView } from 'obsidian'
 
 export interface MarkdownPostInterface {
@@ -59,18 +58,15 @@ export class MarkdownPost implements MarkdownPostInterface {
     // Properties
 
     private frontmatterService: FrontmatterServiceInterface
-    private imageService: ImageServiceInterface
     private markdownView: MarkdownView
 
     // Life cycle
 
     constructor(
         frontmatterService: FrontmatterServiceInterface,
-        imageService: ImageServiceInterface,
         markdownView: MarkdownView
     ) {
         this.frontmatterService = frontmatterService
-        this.imageService = imageService
         this.markdownView = markdownView
     }
 
