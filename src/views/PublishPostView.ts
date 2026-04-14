@@ -107,8 +107,8 @@ export class PublishPostView extends Modal implements PublishPostViewModelDelega
             )
 
         new Setting(contentEl)
-            .setName('Scheduled date')
-            .setDesc('The inclusion of this date is optional, and it serves the purpose of scheduling posts for future publication. If left blank, the system will default to the current date and time. Please use the following format: YYYY-MM-DD HH:MM.')
+            .setName('Date')
+            .setDesc('Set the date of the post. Use any date from the past up to the current date and time. If left blank, it defaults to now. Format: YYYY-MM-DD HH:MM.')
             .addText(text => text
                 .setPlaceholder('YYYY-MM-DD HH:MM')
                 .setValue(this.viewModel.scheduledDate)
