@@ -104,6 +104,13 @@ export class PikaPluginSettingsView extends PluginSettingTab implements PikaPlug
         containerEl.empty()
 
         new Setting(containerEl)
+            .setName('Log in to Pika')
+            .setHeading()
+
+        const loginGroup = containerEl.createDiv('setting-group')
+        const loginItems = loginGroup.createDiv('setting-items')
+
+        new Setting(loginItems)
             .setName('App Token')
             .setDesc('Visit Pika\'s Settings → App tokens to generate one.')
             .addText(text => text
@@ -114,7 +121,7 @@ export class PikaPluginSettingsView extends PluginSettingTab implements PikaPlug
                 })
             )
 
-        new Setting(containerEl)
+        new Setting(loginItems)
             .addButton(button => button
                 .setButtonText('Log in')
                 .setCta()
@@ -133,9 +140,15 @@ export class PikaPluginSettingsView extends PluginSettingTab implements PikaPlug
         const { containerEl } = this
 
         containerEl.empty()
-        containerEl.createEl('h2', { text: 'Posts' })
 
         new Setting(containerEl)
+            .setName('Posts')
+            .setHeading()
+
+        const postsGroup = containerEl.createDiv('setting-group')
+        const postsItems = postsGroup.createDiv('setting-items')
+
+        new Setting(postsItems)
             .setName('Tags')
             .setDesc('Default list of tags for new posts.')
             .addText(text => text
@@ -146,7 +159,7 @@ export class PikaPluginSettingsView extends PluginSettingTab implements PikaPlug
                 })
             )
 
-        new Setting(containerEl)
+        new Setting(postsItems)
             .setName('Visibility')
             .setDesc('Default visibility for new posts.')
             .addDropdown(dropDown => dropDown
@@ -158,14 +171,27 @@ export class PikaPluginSettingsView extends PluginSettingTab implements PikaPlug
                 })
             )
 
-        new Setting(this.containerEl)
+        new Setting(containerEl)
             .setName('Sponsor')
+            .setHeading()
+
+        const sponsorGroup = containerEl.createDiv('setting-group')
+        const sponsorItems = sponsorGroup.createDiv('setting-items')
+
+        new Setting(sponsorItems)
             .setDesc('Enjoying this plugin? Show your appreciation with a cup of coffee!')
             .addButton(button =>
                 button.buttonEl.outerHTML = '<a href="https://ko-fi.com/otaviocc" target="_blank"><img height="36" style="border:0px;height:36px;" src="https://storage.ko-fi.com/cdn/kofi3.png?v=3" border="0" alt="Buy Me a Coffee at ko-fi.com" /></a>'
             )
 
         new Setting(containerEl)
+            .setName('Account')
+            .setHeading()
+
+        const logoutGroup = containerEl.createDiv('setting-group')
+        const logoutItems = logoutGroup.createDiv('setting-items')
+
+        new Setting(logoutItems)
             .addButton(button => button
                 .setButtonText('Log out')
                 .setCta()
