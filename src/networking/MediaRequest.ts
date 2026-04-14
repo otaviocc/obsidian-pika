@@ -23,13 +23,12 @@ SOFTWARE.
 */
 
 /**
- * Represents a request for uploading media to Micro.blog.
+ * Represents a request for uploading media to Pika.
  */
 export interface MediaRequest {
     mediaBuffer: ArrayBuffer
     filename: string
     contentType: string
-    blogID?: string
 }
 
 /**
@@ -46,19 +45,7 @@ export function makeMediaRequestBody(request: MediaRequest): {
     formDataContent += `Content-Disposition: form-data; name="file"; filename="${request.filename}"\r\n`
     formDataContent += `Content-Type: ${request.contentType}\r\n\r\n`
 
-    let postFileContent = ''
-
-    if (request.blogID && request.blogID !== 'default') {
-        postFileContent += `\r\n--${boundary}\r\n`
-        postFileContent += `Content-Disposition: form-data; name="mp-destination"\r\n\r\n`
-        postFileContent += `${request.blogID}\r\n`
-    }
-
-    if (!(request.blogID && request.blogID !== 'default')) {
-        postFileContent += `\r\n`
-    }
-
-    postFileContent += `--${boundary}--\r\n`
+    const postFileContent = `\r\n--${boundary}--\r\n`
 
     const encoder = new TextEncoder()
     const formDataHeaders = encoder.encode(formDataContent)

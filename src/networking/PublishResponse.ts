@@ -23,10 +23,11 @@ SOFTWARE.
 */
 
 /*
- * Response of the `/micropub?h=entry...` network request.
+ * Response of a successful post creation.
+ *
+ * Pika returns `201 Created` with a `Location` header and no body; the
+ * client extracts the header and wraps it in this type.
  */
 export type PublishResponse = {
     url: string
-    preview: string
-    edit: string
 }

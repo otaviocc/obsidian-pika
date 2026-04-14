@@ -1,7 +1,7 @@
 {
-    "name": "microblog-publish-plugin",
-    "version": "3.0.0",
-    "description": "Publish Note to Micro.blog",
+    "name": "pika-publish-plugin",
+    "version": "1.0.0",
+    "description": "Publish Note to Pika",
     "main": "main.js",
     "scripts": {
         "dev": "node esbuild.config.mjs",

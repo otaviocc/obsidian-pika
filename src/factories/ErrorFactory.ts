@@ -50,7 +50,7 @@ export class ErrorFactory {
             if (hasError && hasDescription) {
                 errorDetails = errorResponse.error_description
             } else if (hasError) {
-                errorDetails = 'Micro.blog error code: ' + errorResponse.error
+                errorDetails = 'Pika error code: ' + errorResponse.error
             } else {
                 errorDetails = 'Network error: ' + response.status
             }

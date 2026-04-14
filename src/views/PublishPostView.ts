@@ -24,7 +24,6 @@ SOFTWARE.
 
 import { PublishResponse } from '@networking/PublishResponse'
 import { PublishPostViewModel, PublishPostViewModelDelegate } from '@views/PublishPostViewModel'
-import { TagSuggestionView } from '@views/TagSuggestionView'
 import { App, Modal, Setting } from 'obsidian'
 import { Status } from '@components/Status'
 
@@ -84,19 +83,6 @@ export class PublishPostView extends Modal implements PublishPostViewModelDelega
                 })
             )
 
-        if (this.viewModel.hasMultipleBlogs) {
-            new Setting(contentEl)
-                .setName('Blog')
-                .setDesc('Override the default blog settings for this post.')
-                .addDropdown(dropDown => dropDown
-                    .addOptions(this.viewModel.blogs)
-                    .setValue(this.viewModel.selectedBlogID)
-                    .onChange(value => {
-                        this.viewModel.selectedBlogID = value
-                    })
-                )
-        }
-
         new Setting(contentEl)
             .setName('Categories')
             .setDesc('Override the default categories assigned to this post.')
@@ -105,16 +91,6 @@ export class PublishPostView extends Modal implements PublishPostViewModelDelega
                 .setValue(this.viewModel.tags)
                 .onChange(value => {
                     this.viewModel.tags = value
-                })
-            )
-            .addExtraButton(button => button
-                .setIcon('plus')
-                .setTooltip('Add categories')
-                .onClick(() => {
-                    new TagSuggestionView(
-                        this.viewModel.suggestionsViewModel(),
-                        this.app
-                    ).open()
                 })
             )
 
@@ -205,10 +181,6 @@ export class PublishPostView extends Modal implements PublishPostViewModelDelega
         )
     }
 
-    public publishDidSelectTag() {
-        this.onOpen()
-    }
-
     public publishDidValidateDate() {
         this.onOpen()
     }
@@ -232,8 +204,6 @@ export class PublishPostView extends Modal implements PublishPostViewModelDelega
 
         contentEl.createEl('h2', { text: 'Published' })
         contentEl.createEl('a', { text: 'Open post URL', href: response.url })
-        contentEl.createEl('br')
-        contentEl.createEl('a', { text: 'Open post Preview URL', href: response.preview })
     }
 
     private makeMessageView(

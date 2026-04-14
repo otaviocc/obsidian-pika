@@ -23,11 +23,11 @@ SOFTWARE.
 */
 
 import { ConfigResponse } from '@networking/ConfigResponse'
-import { MicroPluginSettingsDelegate, MicroPluginSettingsViewModel } from '@views/MicroPluginSettingsViewModel'
+import { PikaPluginSettingsDelegate, PikaPluginSettingsViewModel } from '@views/PikaPluginSettingsViewModel'
 import { App, Notice, PluginSettingTab, Setting } from 'obsidian'
 
 /*
- * `MicroPluginSettingsView` subclasses `PluginSettingTab`, and is presented via
+ * `PikaPluginSettingsView` subclasses `PluginSettingTab`, and is presented via
  * Obsidian's Settings Window.
  *
  * The data used to populate this view and all the interaction with the
@@ -35,16 +35,16 @@ import { App, Notice, PluginSettingTab, Setting } from 'obsidian'
  * methods on the view model and observe (via delegate) changes so it
  * can react properly.
  */
-export class MicroPluginSettingsView extends PluginSettingTab implements MicroPluginSettingsDelegate {
+export class PikaPluginSettingsView extends PluginSettingTab implements PikaPluginSettingsDelegate {
 
     // Properties
 
-    private viewModel: MicroPluginSettingsViewModel
+    private viewModel: PikaPluginSettingsViewModel
 
     // Life cycle
 
     constructor(
-        viewModel: MicroPluginSettingsViewModel,
+        viewModel: PikaPluginSettingsViewModel,
         app: App
     ) {
         super(app, viewModel.plugin)
@@ -70,7 +70,7 @@ export class MicroPluginSettingsView extends PluginSettingTab implements MicroPl
         this.viewModel.delegate = undefined
     }
 
-    // MicroPluginSettingsDelegate
+    // PikaPluginSettingsDelegate
 
     public loginDidSucceed(
         _response: ConfigResponse
@@ -78,7 +78,7 @@ export class MicroPluginSettingsView extends PluginSettingTab implements MicroPl
         this.display()
 
         new Notice(
-            'Micro.blog login succeeded'
+            'Pika login succeeded'
         )
     }
 
@@ -88,32 +88,12 @@ export class MicroPluginSettingsView extends PluginSettingTab implements MicroPl
         this.display()
 
         new Notice(
-            'Micro.blog login failed'
+            'Pika login failed'
         )
     }
 
     public logoutDidSucceed() {
         this.display()
-    }
-
-    public refreshDidFail(
-        _error: Error
-    ) {
-        this.display()
-
-        new Notice(
-            'Blogs refresh failed'
-        )
-    }
-
-    public refreshDidSucceed(
-        _response: ConfigResponse
-    ) {
-        this.display()
-
-        new Notice(
-            'Blog(s) refreshed'
-        )
     }
 
     // Private
@@ -125,7 +105,7 @@ export class MicroPluginSettingsView extends PluginSettingTab implements MicroPl
 
         new Setting(containerEl)
             .setName('App Token')
-            .setDesc('Visit Micro.blog\'s Account page to generate one.')
+            .setDesc('Visit Pika\'s Settings → App tokens to generate one.')
             .addText(text => text
                 .setPlaceholder('Enter app token')
                 .setValue(this.viewModel.appToken)
@@ -153,29 +133,6 @@ export class MicroPluginSettingsView extends PluginSettingTab implements MicroPl
         const { containerEl } = this
 
         containerEl.empty()
-        containerEl.createEl('h2', { text: 'Blog' })
-
-        new Setting(containerEl)
-            .setName('Blog')
-            .setDesc('Default blog for new posts and pages.')
-            .addDropdown(dropDown => dropDown
-                .addOptions(this.viewModel.blogs)
-                .setValue(this.viewModel.selectedBlogID)
-                .onChange(value => {
-                    this.viewModel.selectedBlogID = value
-                })
-            )
-            .addExtraButton(button => button
-                .setIcon('sync')
-                .setTooltip('Refresh blogs')
-                .onClick(async () => {
-                    button
-                        .setDisabled(true)
-
-                    await this.viewModel.refreshBlogs()
-                })
-            )
-
         containerEl.createEl('h2', { text: 'Posts' })
 
         new Setting(containerEl)
@@ -198,30 +155,6 @@ export class MicroPluginSettingsView extends PluginSettingTab implements MicroPl
                 .setValue(this.viewModel.visibility)
                 .onChange(value => {
                     this.viewModel.visibility = value
-                })
-            )
-
-        containerEl.createEl('h2', { text: 'Pages' })
-
-        new Setting(containerEl)
-            .setName('Navigation')
-            .setDesc('Default navigation value. Toggle on to automatically include new pages in the blog\'s navigation.')
-            .addToggle(toggle => toggle
-                .setValue(this.viewModel.includePagesInNavigation)
-                .onChange(value => {
-                    this.viewModel.includePagesInNavigation = value
-                })
-            )
-
-        containerEl.createEl('h2', { text: 'Misc.' })
-
-        new Setting(containerEl)
-            .setName('Categories synchronization')
-            .setDesc('Toggle on to automatically synchronize categories when Obsidian opens.')
-            .addToggle(toggle => toggle
-                .setValue(this.viewModel.synchronizeCategoriesOnOpen)
-                .onChange(value => {
-                    this.viewModel.synchronizeCategoriesOnOpen = value
                 })
             )
 

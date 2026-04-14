@@ -27,7 +27,6 @@ SOFTWARE.
  */
 export type NewPostRequest = {
     'type': string[]
-    'mp-destination'?: string
     'properties': {
         'name'?: string[]
         'content': string[],
@@ -39,7 +38,6 @@ export type NewPostRequest = {
 
 // Factory method to create the `NewPostRequest`.
 export function makeNewPostRequest(
-    blogID: string,
     title: string,
     content: string,
     categories: string[],
@@ -48,7 +46,6 @@ export function makeNewPostRequest(
 ): NewPostRequest {
     return {
         'type': ["h-entry"],
-        ...blogID.length > 0 && blogID !== 'default' && { 'mp-destination': blogID },
         'properties': {
             ...title.length > 0 && { 'name': [title] },
             'content': [content],

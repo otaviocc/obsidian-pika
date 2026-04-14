@@ -23,8 +23,9 @@ SOFTWARE.
 */
 
 /**
- * Response from Micro.blog media upload endpoint.
- * This can have several formats depending on the endpoint behavior
+ * Response from Pika's media upload endpoint.
+ * Pika returns the media URL via the `Location` header on 201 Created.
+ * The JSON fields are retained as a defensive fallback.
  */
 export interface MediaResponse {
 
@@ -39,8 +40,9 @@ export interface MediaResponse {
 }
 
 /**
- * Extract the media URL from a media response
- * Handles the various formats Micro.blog might return.
+ * Extract the media URL from a media response.
+ * Prefers the `Location` header as documented by Pika, then
+ * falls back to JSON fields for compatibility with other servers.
  */
 export function extractMediaURL(
     response: MediaResponse,

@@ -34,9 +34,17 @@ export interface NetworkClientInterface {
     // Performs the network request. It takes a network request
     // and returns a Promise. `T` specifies the return type and is used
     // by the network client to decode the network payload.
+    //
+    // Returns `{}` cast to `T` when the response has no body or the body
+    // is not valid JSON — Pika's update response (mf2 properties) is not
+    // consumed by any view model, so we don't force callers to care.
     run<T>(request: NetworkRequest): Promise<T>
 
-    // Uploads a media file to Micro.blog media endpoint.
+    // Performs a create request and returns the URL from the response's
+    // `Location` header (Pika returns `201 Created` with no body).
+    createPost(request: NetworkRequest): Promise<string>
+
+    // Uploads a media file to Pika's media endpoint.
     // Returns a Promise with the URL of the uploaded media.
     uploadMedia(
         mediaRequest: MediaRequest
@@ -55,7 +63,7 @@ export class NetworkClient implements NetworkClientInterface {
     // Properties
 
     private appToken: () => string
-    private readonly microBlogBaseURL = 'https://micro.blog'
+    private readonly pikaBaseURL = 'https://pika.page'
 
     // Life cycle
 
@@ -68,32 +76,37 @@ export class NetworkClient implements NetworkClientInterface {
     // Public
 
     public async run<T>(request: NetworkRequest): Promise<T> {
-        const url = this.microBlogBaseURL + request.path + (request.parameters ? '?' + request.parameters : '')
-
-        const response = await requestUrl({
-            url,
-            method: request.method,
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + this.appToken()
-            },
-            body: typeof request.body === 'string' ? request.body : undefined,
-            throw: false
-        })
+        const response = await this.perform(request)
 
         if (!response.ok) {
             throw ErrorFactory.makeErrorFromRequestUrlResponse(response)
         }
 
-        const isSuccess = response.status >= 200 && response.status < 300
-        const isEmptyBody = response.headers['content-length'] === '0'
-
-        if (isSuccess && isEmptyBody) {
+        if (!response.text || response.text.length === 0) {
             return {} as T
         }
 
-        return JSON.parse(response.text) as T
+        try {
+            return JSON.parse(response.text) as T
+        } catch {
+            return {} as T
+        }
+    }
+
+    public async createPost(request: NetworkRequest): Promise<string> {
+        const response = await this.perform(request)
+
+        if (!response.ok) {
+            throw ErrorFactory.makeErrorFromRequestUrlResponse(response)
+        }
+
+        const location = response.headers['location'] ?? response.headers['Location']
+
+        if (!location) {
+            throw new Error('Pika response did not include a Location header')
+        }
+
+        return location
     }
 
     public async uploadMedia(
@@ -103,7 +116,7 @@ export class NetworkClient implements NetworkClientInterface {
         const contentTypeHeader = `multipart/form-data; boundary=${boundary}`
 
         const response = await requestUrl({
-            url: `${this.microBlogBaseURL}/micropub/media`,
+            url: `${this.pikaBaseURL}/micropub/media`,
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + this.appToken(),
@@ -127,5 +140,23 @@ export class NetworkClient implements NetworkClientInterface {
             }
             throw new Error('Unable to extract media URL from response')
         }
+    }
+
+    // Private
+
+    private async perform(request: NetworkRequest) {
+        const url = this.pikaBaseURL + request.path + (request.parameters ? '?' + request.parameters : '')
+
+        return await requestUrl({
+            url,
+            method: request.method,
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + this.appToken()
+            },
+            body: typeof request.body === 'string' ? request.body : undefined,
+            throw: false
+        })
     }
 }

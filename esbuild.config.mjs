@@ -15,7 +15,7 @@ esbuild.build({
 	banner: {
 		js: banner,
 	},
-	entryPoints: ['src/MicroPlugin.ts'],
+	entryPoints: ['src/PikaPlugin.ts'],
 	bundle: true,
 	external: [
 		'obsidian',

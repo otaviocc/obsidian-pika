@@ -22,7 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-import { TagSuggestionView } from '@views/TagSuggestionView'
 import { UpdatePostViewModel, UpdatePostViewModelDelegate } from '@views/UpdatePostViewModel'
 import { App, Modal, Setting } from 'obsidian'
 import { Status } from '@components/Status'
@@ -84,19 +83,6 @@ export class UpdatePostView extends Modal implements UpdatePostViewModelDelegate
                 })
             )
 
-        if (this.viewModel.hasMultipleBlogs) {
-            new Setting(contentEl)
-                .setName('Blog')
-                .setDesc('Confirm the blog for this post.')
-                .addDropdown(dropDown => dropDown
-                    .addOptions(this.viewModel.blogs)
-                    .setValue(this.viewModel.selectedBlogID)
-                    .onChange(value => {
-                        this.viewModel.selectedBlogID = value
-                    })
-                )
-        }
-
         new Setting(contentEl)
             .setName('Categories')
             .setDesc('Confirm the categories assigned to this post.')
@@ -107,17 +93,6 @@ export class UpdatePostView extends Modal implements UpdatePostViewModelDelegate
                     this.viewModel.tags = value
                 })
             )
-            .addExtraButton(button => button
-                .setIcon('plus')
-                .setTooltip('Add categories')
-                .onClick(() => {
-                    new TagSuggestionView(
-                        this.viewModel.suggestionsViewModel(),
-                        this.app
-                    ).open()
-                })
-            )
-
         this.statusComponent = new Status(contentEl)
 
         new Setting(contentEl)
@@ -148,10 +123,6 @@ export class UpdatePostView extends Modal implements UpdatePostViewModelDelegate
     }
 
     // UpdatePostViewModelDelegate
-
-    public updateDidSelectTag() {
-        this.onOpen()
-    }
 
     public updateDidClearTitle() {
         this.onOpen()

@@ -22,13 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-import { ViewModelFactoryInterface } from '@factories/ViewModelFactory'
 import { NetworkClientInterface } from '@networking/NetworkClient'
 import { NetworkRequestFactoryInterface } from '@networking/NetworkRequestFactory'
 import { PublishResponse } from '@networking/PublishResponse'
 import { FrontmatterServiceInterface } from '@services/FrontmatterService'
 import { ImageServiceInterface, ImageServiceDelegate } from '@services/ImageService'
-import { TagSuggestionDelegate, TagSuggestionViewModel } from '@views/TagSuggestionViewModel'
 
 /*
  * `UpdatePostViewModelDelegate` interface, implemented by
@@ -46,9 +44,6 @@ export interface UpdatePostViewModelDelegate {
     // Triggered when updating a post fails.
     updateDidFail(error: Error): void
 
-    // Triggered when selecting a tag from the picker.
-    updateDidSelectTag(): void
-
     // Triggered when the network request starts.
     updateRequestDidStart(): void
 
@@ -60,22 +55,19 @@ export interface UpdatePostViewModelDelegate {
  * This view model drives the content and interactions with the
  * update view.
  */
-export class UpdatePostViewModel implements TagSuggestionDelegate, ImageServiceDelegate {
+export class UpdatePostViewModel implements ImageServiceDelegate {
 
     // Properties
 
     public delegate?: UpdatePostViewModelDelegate
     readonly url: string
-    readonly blogs: Record<string, string>
     private isSubmitting: boolean
-    private blogID: string
     private titleWrappedValue: string
     private content: string
     private tagsWrappedValue: string
     private frontmatterService: FrontmatterServiceInterface
     private networkClient: NetworkClientInterface
     private networkRequestFactory: NetworkRequestFactoryInterface
-    private viewModelFactory: ViewModelFactoryInterface
     private imageService: ImageServiceInterface
     private totalImagesToProcess = 0
     private processedImagesCount = 0
@@ -87,25 +79,19 @@ export class UpdatePostViewModel implements TagSuggestionDelegate, ImageServiceD
         title: string,
         content: string,
         tags: string,
-        blogs: Record<string, string>,
-        blogID: string,
         frontmatterService: FrontmatterServiceInterface,
         networkClient: NetworkClientInterface,
         networkRequestFactory: NetworkRequestFactoryInterface,
-        imageService: ImageServiceInterface,
-        viewModelFactory: ViewModelFactoryInterface
+        imageService: ImageServiceInterface
     ) {
         this.url = url
         this.titleWrappedValue = title
         this.content = content
         this.tagsWrappedValue = tags
-        this.blogs = blogs
-        this.blogID = blogID
         this.isSubmitting = false
         this.frontmatterService = frontmatterService
         this.networkClient = networkClient
         this.networkRequestFactory = networkRequestFactory
-        this.viewModelFactory = viewModelFactory
         this.imageService = imageService
         this.imageService.delegate = this
     }
@@ -120,18 +106,16 @@ export class UpdatePostViewModel implements TagSuggestionDelegate, ImageServiceD
             const tags = this.tags.validValues()
 
             const processedContent = await this.imageService.processContent(
-                this.content,
-                this.blogID
+                this.content
             )
 
             if (this.isSubmitting) {
                 this.delegate?.updateDidUpdateImageProcessingStatus(
-                    'Sending post to Micro.blog...'
+                    'Sending post to Pika...'
                 )
 
                 const request = this.networkRequestFactory.makeUpdateRequest(
                     this.url,
-                    this.blogID,
                     this.title,
                     processedContent,
                     tags
@@ -150,18 +134,6 @@ export class UpdatePostViewModel implements TagSuggestionDelegate, ImageServiceD
         } catch (error) {
             this.delegate?.updateDidFail(error)
         }
-    }
-
-    public get hasMultipleBlogs(): boolean {
-        return Object.keys(this.blogs).length > 2
-    }
-
-    public get selectedBlogID(): string {
-        return this.blogID
-    }
-
-    public set selectedBlogID(value: string) {
-        this.blogID = value
     }
 
     public get title(): string {
@@ -187,32 +159,6 @@ export class UpdatePostViewModel implements TagSuggestionDelegate, ImageServiceD
     public clearTitle() {
         this.title = ''
         this.delegate?.updateDidClearTitle()
-    }
-
-    public suggestionsViewModel(): TagSuggestionViewModel {
-        const excluding = this.tags.validValues()
-
-        return this.viewModelFactory.makeTagSuggestionViewModel(
-            this.blogID,
-            excluding,
-            this
-        )
-    }
-
-    // TagSuggestionDelegate
-
-    public tagSuggestionDidSelectTag(
-        category: string
-    ) {
-        const tags = this.tags.validValues()
-        tags.push(category)
-
-        const formattedTags = tags
-            .filter((tag, index) => index === tags.indexOf(tag))
-            .join()
-
-        this.tags = formattedTags
-        this.delegate?.updateDidSelectTag()
     }
 
     // ImageServiceDelegate

@@ -58,14 +58,12 @@ export interface ImageServiceInterface {
 
     // Process image references in the content and upload any local images
     processAndUploadImages(
-        content: string,
-        blogID: string
+        content: string
     ): Promise<string>
 
     // Process content with image references before publishing.
     processContent(
-        content: string,
-        blogID: string
+        content: string
     ): Promise<string>
 
     // Delegate for communication with UI layer.
@@ -108,22 +106,19 @@ export class ImageService implements ImageServiceInterface {
     // Public
 
     public async processContent(
-        content: string,
-        blogID: string
+        content: string
     ): Promise<string> {
         if (!content.includes('![')) {
             return content
         }
 
         return await this.processAndUploadImages(
-            content,
-            blogID
+            content
         )
     }
 
     public async processAndUploadImages(
-        content: string,
-        blogID: string
+        content: string
     ): Promise<string> {
         const imageURLMap = await this.getImageURLMap()
         let processedContent = content
@@ -139,15 +134,13 @@ export class ImageService implements ImageServiceInterface {
         processedContent = await this.processImageReferences(
             processedContent,
             standardImages,
-            imageURLMap,
-            blogID
+            imageURLMap
         )
 
         processedContent = await this.processImageReferences(
             processedContent,
             wikiImages,
-            imageURLMap,
-            blogID
+            imageURLMap
         )
 
         if (allImages.length > 0) {
@@ -193,8 +186,7 @@ export class ImageService implements ImageServiceInterface {
     private async processImageReferences(
         content: string,
         images: ImageReference[],
-        imageURLMap: Record<string, string>,
-        blogID: string
+        imageURLMap: Record<string, string>
     ): Promise<string> {
         let processedContent = content
 
@@ -220,7 +212,7 @@ export class ImageService implements ImageServiceInterface {
                     continue
                 }
 
-                const remoteURL = await this.uploadImageFile(imageFile, blogID)
+                const remoteURL = await this.uploadImageFile(imageFile)
                 if (!remoteURL) {
                     this.delegate?.imageDidProcess(image.path, false)
                     continue
@@ -268,8 +260,7 @@ export class ImageService implements ImageServiceInterface {
     }
 
     private async uploadImageFile(
-        imageFile: TFile,
-        blogID: string
+        imageFile: TFile
     ): Promise<string | null> {
         try {
             const imageBuffer = await this.app.vault.readBinary(imageFile)
@@ -279,8 +270,7 @@ export class ImageService implements ImageServiceInterface {
             const mediaRequest = this.networkRequestFactory.makeMediaUploadRequest(
                 imageBuffer,
                 imageFile.name,
-                contentType,
-                blogID
+                contentType
             )
 
             try {

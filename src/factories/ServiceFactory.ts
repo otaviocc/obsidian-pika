@@ -22,9 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-import { MicroPluginContainerInterface } from '@base/MicroPluginContainer'
+import { PikaPluginContainerInterface } from '@base/PikaPluginContainer'
 import { FrontmatterService, FrontmatterServiceInterface } from '@services/FrontmatterService'
-import { TagSynchronizationService, TagSynchronizationServiceDelegate, TagSynchronizationServiceInterface } from '@services/TagSynchronizationService'
 import { ImageService, ImageServiceInterface } from '@services/ImageService'
 import { TFile } from 'obsidian'
 
@@ -34,13 +33,6 @@ export interface ServiceFactoryInterface {
     makeFrontmatterService(
         file: TFile | null
     ): FrontmatterServiceInterface
-
-    // Builds the synchronization service, used by the client
-    // to synchronize categories when the plugin is loaded
-    // and when synchronization is triggered via command.
-    makeTagSynchronizationService(
-        delegate?: TagSynchronizationServiceDelegate
-    ): TagSynchronizationServiceInterface
 
     // Builds an image service for processing and uploading images
     makeImageService(
@@ -57,12 +49,12 @@ export class ServiceFactory implements ServiceFactoryInterface {
 
     // Properties
 
-    private container: MicroPluginContainerInterface
+    private container: PikaPluginContainerInterface
 
     // Life cycle
 
     constructor(
-        container: MicroPluginContainerInterface
+        container: PikaPluginContainerInterface
     ) {
         this.container = container
     }
@@ -75,18 +67,6 @@ export class ServiceFactory implements ServiceFactoryInterface {
         return new FrontmatterService(
             this.container.plugin.app,
             file
-        )
-    }
-
-    public makeTagSynchronizationService(
-        delegate?: TagSynchronizationServiceDelegate
-    ): TagSynchronizationServiceInterface {
-        return new TagSynchronizationService(
-            this.container.plugin,
-            this.container.settings,
-            this.container.networkClient,
-            this.container.networkRequestFactory,
-            delegate
         )
     }
 

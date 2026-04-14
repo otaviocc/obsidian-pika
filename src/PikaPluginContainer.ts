@@ -22,18 +22,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-import MicroPlugin from '@base/MicroPlugin'
+import PikaPlugin from '@base/PikaPlugin'
 import { NetworkClient, NetworkClientInterface } from '@networking/NetworkClient'
 import { NetworkRequestFactory, NetworkRequestFactoryInterface } from '@networking/NetworkRequestFactory'
 import { StoredSettings } from '@stores/StoredSettings'
 
-export interface MicroPluginContainerInterface {
+export interface PikaPluginContainerInterface {
 
     // The stored plugin settings.
     settings: StoredSettings
 
-    // The Micro.publish plugin.
-    plugin: MicroPlugin
+    // The Pika.publish plugin.
+    plugin: PikaPlugin
 
     // The network client used to perform network request.
     networkClient: NetworkClientInterface
@@ -43,12 +43,12 @@ export interface MicroPluginContainerInterface {
     networkRequestFactory: NetworkRequestFactoryInterface
 }
 
-export class MicroPluginContainer implements MicroPluginContainerInterface {
+export class PikaPluginContainer implements PikaPluginContainerInterface {
 
     // Properties
 
     readonly settings: StoredSettings
-    readonly plugin: MicroPlugin
+    readonly plugin: PikaPlugin
     readonly networkClient: NetworkClientInterface
     readonly networkRequestFactory: NetworkRequestFactoryInterface
 
@@ -56,7 +56,7 @@ export class MicroPluginContainer implements MicroPluginContainerInterface {
 
     constructor(
         settings: StoredSettings,
-        plugin: MicroPlugin
+        plugin: PikaPlugin
     ) {
         this.settings = settings
         this.plugin = plugin
