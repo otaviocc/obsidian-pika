@@ -84,10 +84,10 @@ export class UpdatePostView extends Modal implements UpdatePostViewModelDelegate
             )
 
         new Setting(contentEl)
-            .setName('Categories')
-            .setDesc('Confirm the categories assigned to this post.')
+            .setName('Tags')
+            .setDesc('Confirm the tags assigned to this post.')
             .addText(text => text
-                .setPlaceholder('category1, category2, category3')
+                .setPlaceholder('tag1, tag2, tag3')
                 .setValue(this.viewModel.tags)
                 .onChange(value => {
                     this.viewModel.tags = value
