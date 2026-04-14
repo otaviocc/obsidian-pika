@@ -3,7 +3,7 @@
     "name": "Pika.publish",
     "version": "1.0.0",
     "minAppVersion": "0.15.0",
-    "description": "Publish notes to Pika",
+    "description": "Publish notes to Pika.",
     "author": "Otavio Cordeiro",
     "authorUrl": "https://otavio.cc",
     "isDesktopOnly": false,
