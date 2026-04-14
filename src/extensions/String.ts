@@ -39,8 +39,8 @@ String.prototype.removeFrontmatter = function(this: string) {
 String.prototype.validValues = function(this: string) {
     return this
         .split(',')
-        .filter(value => value.length > 0)
         .map(tag => tag.trim())
+        .filter(value => value.length > 0)
 }
 
 interface Bounds {

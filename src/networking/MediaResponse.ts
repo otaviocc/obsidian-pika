@@ -48,6 +48,10 @@ export function extractMediaURL(
     response: MediaResponse,
     locationHeader?: string
 ): string {
+    if (locationHeader) {
+        return locationHeader
+    }
+
     if (response.url) {
         return response.url
     }
@@ -63,10 +67,6 @@ export function extractMediaURL(
 
     if (response.location) {
         return response.location
-    }
-
-    if (locationHeader) {
-        return locationHeader
     }
 
     throw new Error('Unable to extract media URL from response data')

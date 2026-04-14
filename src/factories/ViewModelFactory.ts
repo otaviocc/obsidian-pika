@@ -78,12 +78,8 @@ export class ViewModelFactory implements ViewModelFactoryInterface {
         const frontmatterService = this.serviceFactory
             .makeFrontmatterService(markdownView.file)
 
-        const imageService = this.serviceFactory
-            .makeImageService(markdownView.file)
-
         const post = new MarkdownPost(
             frontmatterService,
-            imageService,
             markdownView
         )
 
