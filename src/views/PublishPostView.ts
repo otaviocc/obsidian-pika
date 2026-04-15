@@ -58,7 +58,7 @@ export class PublishPostView extends Modal implements PublishPostViewModelDelega
     // Public
 
     public onOpen() {
-        super.onOpen()
+        void super.onOpen()
 
         const { contentEl } = this
 

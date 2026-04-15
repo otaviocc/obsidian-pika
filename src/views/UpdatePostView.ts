@@ -57,7 +57,7 @@ export class UpdatePostView extends Modal implements UpdatePostViewModelDelegate
     // Public
 
     public onOpen() {
-        super.onOpen()
+        void super.onOpen()
 
         const { contentEl } = this
 
