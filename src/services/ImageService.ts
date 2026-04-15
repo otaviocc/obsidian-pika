@@ -302,10 +302,10 @@ export class ImageService implements ImageServiceInterface {
             )
     }
 
-    private async saveImageURL(
+    private saveImageURL(
         localPath: string,
         remoteURL: string
-    ): Promise<void> {
+    ): void {
         const imageURLMap = this.getImageURLMap()
         imageURLMap[localPath] = remoteURL
 
