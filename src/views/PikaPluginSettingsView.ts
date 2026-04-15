@@ -178,11 +178,20 @@ export class PikaPluginSettingsView extends PluginSettingTab implements PikaPlug
         const sponsorGroup = containerEl.createDiv('setting-group')
         const sponsorItems = sponsorGroup.createDiv('setting-items')
 
-        new Setting(sponsorItems)
+        const sponsorSetting = new Setting(sponsorItems)
             .setDesc('Enjoying this plugin? Show your appreciation with a cup of coffee!')
-            .addButton(button =>
-                button.buttonEl.outerHTML = '<a href="https://ko-fi.com/otaviocc" target="_blank"><img height="36" style="border:0px;height:36px;" src="https://storage.ko-fi.com/cdn/kofi3.png?v=3" border="0" alt="Buy Me a Coffee at ko-fi.com" /></a>'
-            )
+
+        const anchor = sponsorSetting.controlEl.createEl('a', {
+            href: 'https://ko-fi.com/otaviocc',
+            attr: { target: '_blank' }
+        })
+        anchor.createEl('img', {
+            attr: {
+                height: '36',
+                src: 'https://storage.ko-fi.com/cdn/kofi3.png?v=3',
+                alt: 'Buy Me a Coffee at ko-fi.com'
+            }
+        })
 
         new Setting(containerEl)
             .setName('Account')
