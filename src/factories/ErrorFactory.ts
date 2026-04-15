@@ -48,9 +48,9 @@ export class ErrorFactory {
             const hasDescription = errorResponse.error_description
 
             if (hasError && hasDescription) {
-                errorDetails = errorResponse.error_description
+                errorDetails = hasDescription
             } else if (hasError) {
-                errorDetails = 'Pika error code: ' + errorResponse.error
+                errorDetails = 'Pika error code: ' + hasError
             } else {
                 errorDetails = 'Network error: ' + response.status
             }
