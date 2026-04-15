@@ -113,7 +113,7 @@ export class MarkdownPost implements MarkdownPostInterface {
 
         try {
             return JSON.parse(imageURLsString)
-        } catch (e) {
+        } catch {
             return null
         }
     }
