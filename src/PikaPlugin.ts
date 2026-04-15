@@ -51,8 +51,8 @@ export default class PikaPlugin extends Plugin {
         await this.loadViewModelFactory()
 
         this.addCommand({
-            id: 'pika-publish-post-command',
-            name: 'Publish Post to Pika',
+            id: 'publish-post',
+            name: 'Publish post to Pika',
             editorCallback: (editor, markdownView) => {
                 if (editor.getValue().trim().length == 0) {
                     new ErrorView(
