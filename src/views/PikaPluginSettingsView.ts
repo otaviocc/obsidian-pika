@@ -111,8 +111,8 @@ export class PikaPluginSettingsView extends PluginSettingTab implements PikaPlug
         const loginItems = loginGroup.createDiv('setting-items')
 
         new Setting(loginItems)
-            .setName('App Token')
-            .setDesc('Visit Pika\'s Settings → App tokens to generate one.')
+            .setName('App token')
+            .setDesc('Visit Pika\'s settings → app tokens to generate one.')
             .addText(text => text
                 .setPlaceholder('Enter app token')
                 .setValue(this.viewModel.appToken)
@@ -152,7 +152,7 @@ export class PikaPluginSettingsView extends PluginSettingTab implements PikaPlug
             .setName('Tags')
             .setDesc('Default list of tags for new posts.')
             .addText(text => text
-                .setPlaceholder('tag1, tag2, tag3')
+                .setPlaceholder('Tag1, tag2, tag3')
                 .setValue(this.viewModel.tags)
                 .onChange(value => {
                     this.viewModel.tags = value

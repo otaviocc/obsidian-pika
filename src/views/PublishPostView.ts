@@ -87,7 +87,7 @@ export class PublishPostView extends Modal implements PublishPostViewModelDelega
             .setName('Tags')
             .setDesc('Override the default tags assigned to this post.')
             .addText(text => text
-                .setPlaceholder('tag1, tag2, tag3')
+                .setPlaceholder('Tag1, tag2, tag3')
                 .setValue(this.viewModel.tags)
                 .onChange(value => {
                     this.viewModel.tags = value
@@ -108,9 +108,9 @@ export class PublishPostView extends Modal implements PublishPostViewModelDelega
 
         new Setting(contentEl)
             .setName('Date')
-            .setDesc('Set the date of the post. Use any date from the past up to the current date and time. If left blank, it defaults to now. Format: YYYY-MM-DD HH:MM.')
+            .setDesc('Set the date of the post. Use any date from the past up to the current date and time. If left blank, it defaults to now. Format: yyyy-mm-dd hh:mm.')
             .addText(text => text
-                .setPlaceholder('YYYY-MM-DD HH:MM')
+                .setPlaceholder('Yyyy-mm-dd hh:mm')
                 .setValue(this.viewModel.scheduledDate)
                 .onChange(value => {
                     this.viewModel.scheduledDate = value

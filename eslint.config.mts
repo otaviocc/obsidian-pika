@@ -37,6 +37,7 @@ export default tseslint.config(
 			"@typescript-eslint/ban-ts-comment": "off",
 			"@typescript-eslint/no-empty-function": "off",
 			"@typescript-eslint/no-unused-expressions": "error",
+			"obsidianmd/ui/sentence-case": ["error", { ignoreWords: ["Pika"] }],
 			"@typescript-eslint/no-useless-constructor": "warn",
 			"@typescript-eslint/require-await": "error",
 			"@typescript-eslint/member-ordering": ["error", {
