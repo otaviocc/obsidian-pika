@@ -43,7 +43,7 @@ export class ErrorFactory {
         let errorDetails = ''
 
         try {
-            const errorResponse = JSON.parse(response.text)
+            const errorResponse = JSON.parse(response.text) as { error?: string; error_description?: string }
             const hasError = errorResponse.error
             const hasDescription = errorResponse.error_description
 

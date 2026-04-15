@@ -89,10 +89,11 @@ export class FrontmatterService implements FrontmatterServiceInterface {
 
         try {
             void this.app.fileManager.processFrontMatter(this.file, frontmatter => {
+                const fm = frontmatter as Record<string, unknown>
                 if (value === null) {
-                    delete frontmatter[key]
+                    delete fm[key]
                 } else {
-                    frontmatter[key] = value
+                    fm[key] = value
                 }
             })
         } catch {
@@ -104,7 +105,7 @@ export class FrontmatterService implements FrontmatterServiceInterface {
         key: string
     ): string | null {
         const frontmatter = this.parseFrontmatterFromFile()
-        const entry = parseFrontMatterEntry(frontmatter, key)
+        const entry = parseFrontMatterEntry(frontmatter, key) as string | null
 
         return frontmatter && key in frontmatter
             ? entry === null || entry === ''

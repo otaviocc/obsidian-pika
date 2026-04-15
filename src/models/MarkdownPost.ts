@@ -112,7 +112,7 @@ export class MarkdownPost implements MarkdownPostInterface {
         }
 
         try {
-            return JSON.parse(imageURLsString)
+            return JSON.parse(imageURLsString) as string[]
         } catch {
             return null
         }

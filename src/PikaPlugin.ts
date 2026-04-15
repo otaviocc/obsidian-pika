@@ -94,11 +94,10 @@ export default class PikaPlugin extends Plugin {
     // Private
 
     private async loadSettings() {
-        this.settings = Object.assign(
-            {},
-            defaultSettings,
-            await this.loadData()
-        )
+        this.settings = {
+            ...defaultSettings,
+            ...(await this.loadData() as Partial<StoredSettings>)
+        }
     }
 
     private loadDependencies() {
