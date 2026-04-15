@@ -114,7 +114,7 @@ export class PikaPluginSettingsViewModel {
             this.delegate?.loginDidSucceed(response)
         } catch (error) {
             this.logout()
-            this.delegate?.loginDidFail(error)
+            this.delegate?.loginDidFail(error instanceof Error ? error : new Error(String(error)))
         }
     }
 

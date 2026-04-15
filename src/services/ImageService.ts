@@ -228,7 +228,7 @@ export class ImageService implements ImageServiceInterface {
                     break
                 }
 
-                await this.saveImageURL(image.path, remoteURL)
+                this.saveImageURL(image.path, remoteURL)
 
                 processedContent = this.replaceImageReference(
                     processedContent,
