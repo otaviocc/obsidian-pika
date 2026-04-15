@@ -48,7 +48,7 @@ export class ErrorView extends Modal {
     // Public
 
     public onOpen() {
-        super.onOpen()
+        void super.onOpen()
 
         const { contentEl } = this
 

@@ -88,7 +88,7 @@ export class FrontmatterService implements FrontmatterServiceInterface {
         }
 
         try {
-            this.app.fileManager.processFrontMatter(this.file, frontmatter => {
+            void this.app.fileManager.processFrontMatter(this.file, frontmatter => {
                 if (value === null) {
                     delete frontmatter[key]
                 } else {

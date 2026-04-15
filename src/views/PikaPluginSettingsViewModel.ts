@@ -84,7 +84,7 @@ export class PikaPluginSettingsViewModel {
 
     public set appToken(value: string) {
         this.settings.appToken = value
-        this.plugin.saveSettings()
+        void this.plugin.saveSettings()
     }
 
     public get tags(): string {
@@ -93,7 +93,7 @@ export class PikaPluginSettingsViewModel {
 
     public set tags(value: string) {
         this.settings.defaultTags = value
-        this.plugin.saveSettings()
+        void this.plugin.saveSettings()
     }
 
     public get visibility(): string {
@@ -102,7 +102,7 @@ export class PikaPluginSettingsViewModel {
 
     public set visibility(value: string) {
         this.settings.postVisibility = value
-        this.plugin.saveSettings()
+        void this.plugin.saveSettings()
     }
 
     public async validate() {
