@@ -145,7 +145,7 @@ export class NetworkClient implements NetworkClientInterface {
     // Private
 
     private async perform(request: NetworkRequest) {
-        const url = this.pikaBaseURL + request.path + (request.parameters ? '?' + request.parameters : '')
+        const url = this.pikaBaseURL + request.path + (request.parameters ? '?' + request.parameters.toString() : '')
 
         return await requestUrl({
             url,
