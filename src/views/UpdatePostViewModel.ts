@@ -132,7 +132,7 @@ export class UpdatePostViewModel implements ImageServiceDelegate {
                 this.delegate?.updateDidSucceed(result)
             }
         } catch (error) {
-            this.delegate?.updateDidFail(error)
+            this.delegate?.updateDidFail(error instanceof Error ? error : new Error(String(error)))
         }
     }
 

@@ -190,7 +190,7 @@ export class PublishPostViewModel implements ImageServiceDelegate {
                 this.delegate?.publishDidSucceed(result)
             }
         } catch (error) {
-            this.delegate?.publishDidFail(error)
+            this.delegate?.publishDidFail(error instanceof Error ? error : new Error(String(error)))
         }
     }
 
