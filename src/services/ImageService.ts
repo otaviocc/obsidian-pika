@@ -294,7 +294,7 @@ export class ImageService implements ImageServiceInterface {
         }
     }
 
-    private async getImageURLMap(): Promise<Record<string, string>> {
+    private getImageURLMap(): Record<string, string> {
         return this.frontmatterService
             .retrieveJSON<Record<string, string>>(
                 'image_urls',
