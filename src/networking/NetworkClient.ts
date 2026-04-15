@@ -133,7 +133,7 @@ export class NetworkClient implements NetworkClientInterface {
         try {
             const jsonResponse = JSON.parse(response.text) as MediaResponse
             return extractMediaURL(jsonResponse, response.headers['location'])
-        } catch (jsonError) {
+        } catch {
             const location = response.headers['location']
             if (location) {
                 return location
