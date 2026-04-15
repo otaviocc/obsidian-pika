@@ -46,9 +46,9 @@ export default class PikaPlugin extends Plugin {
 
     public async onload() {
         await this.loadSettings()
-        await this.loadDependencies()
-        await this.loadServiceFactory()
-        await this.loadViewModelFactory()
+        this.loadDependencies()
+        this.loadServiceFactory()
+        this.loadViewModelFactory()
 
         this.addCommand({
             id: 'publish-post',

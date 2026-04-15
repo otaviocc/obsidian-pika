@@ -122,7 +122,7 @@ export class ImageService implements ImageServiceInterface {
         content: string
     ): Promise<string> {
         this.failed = false
-        const imageURLMap = await this.getImageURLMap()
+        const imageURLMap = this.getImageURLMap()
         let processedContent = content
 
         const standardImages = this.extractStandardImageReferences(content)
@@ -306,7 +306,7 @@ export class ImageService implements ImageServiceInterface {
         localPath: string,
         remoteURL: string
     ): Promise<void> {
-        const imageURLMap = await this.getImageURLMap()
+        const imageURLMap = this.getImageURLMap()
         imageURLMap[localPath] = remoteURL
 
         try {
