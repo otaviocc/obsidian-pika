@@ -101,20 +101,20 @@ export default class PikaPlugin extends Plugin {
         )
     }
 
-    private async loadDependencies() {
+    private loadDependencies() {
         this.container = new PikaPluginContainer(
             this.settings,
             this
         )
     }
 
-    private async loadServiceFactory() {
+    private loadServiceFactory() {
         this.serviceFactory = new ServiceFactory(
             this.container
         )
     }
 
-    private async loadViewModelFactory() {
+    private loadViewModelFactory() {
         this.viewModelFactory = new ViewModelFactory(
             this.container,
             this.serviceFactory
